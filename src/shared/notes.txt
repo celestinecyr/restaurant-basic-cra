@@ -1,0 +1,1 @@
+Use the shared subfolder to store all the information that is shared among various components in my React Application that we are designing
