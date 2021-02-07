@@ -23,7 +23,6 @@ class Menu extends Component {
         //cannot just type this.setstate=dish WRONG!!
         this.setState({ selectedDish:dish })
     }
-
     //when the dish is selected^, we also want to render the details of the dish
     renderDish(dish) {
         if(dish != null) {
@@ -77,20 +76,16 @@ class Menu extends Component {
         return (            
         //inside here it returns what needs to be displayed on the UI by this component
             <div className="container">
-
                 <div className="row">
                         {menu}
                 </div>
-
+                
                 <div className="row">
                     {this.renderDish(this.state.selectedDish)}
                 </div>
-
             </div>
         );
     }
 }
-
-
 export default Menu;
 // How to make use of this menu component? go App.js
