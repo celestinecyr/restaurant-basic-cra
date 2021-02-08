@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 // import { Media } from 'reactstrap';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import DishDetail from './DishdetailComponent';
 
-class Menu extends Component {
+class Menu extends React.Component {
 
     constructor(props) {
         super(props);
@@ -22,24 +23,6 @@ class Menu extends Component {
         //REMEMBER, WHEN WE WANT TO CHANGE THE STATE WE NEED TO USE THIS.SETSTATE FUNCTION CALL
         //cannot just type this.setstate=dish WRONG!!
         this.setState({ selectedDish:dish })
-    }
-    //when the dish is selected^, we also want to render the details of the dish
-    renderDish(dish) {
-        if(dish != null) {
-            return(
-                <Card>
-                    <CardImg width="100%" object src={dish.image} alt={dish.name} />  
-                    <CardBody>
-                        <CardTitle>{dish.name}</CardTitle>
-                        <CardText>{dish.description}</CardText>
-                    </CardBody>
-                </Card>
-            )
-        } else {
-            return(
-                <div></div> //empty div, nothing will render
-            )
-        }
     }
 
     render() {
@@ -77,11 +60,12 @@ class Menu extends Component {
         //inside here it returns what needs to be displayed on the UI by this component
             <div className="container">
                 <div className="row">
-                        {menu}
+                    {menu}
                 </div>
                 
                 <div className="row">
-                    {this.renderDish(this.state.selectedDish)}
+                    {/* {this.renderDish(this.state.selectedDish)} */}
+                    <DishDetail dish={this.state.selectedDish} />
                 </div>
             </div>
         );
