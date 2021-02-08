@@ -1,8 +1,10 @@
 // this file will be acting as a seudo container container for this application
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
+// import { Navbar, NavbarBrand } from 'reactstrap';
 import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
+import Header from './HeaderComponent';
+import Footer from './FooterComponent';
 import { DISHES } from '../shared/dishes';              //has to be ../ we go one level up, then into the shared folder
 
 class Main extends Component {
@@ -23,11 +25,7 @@ class Main extends Component {
   render() {
     return (
       <div>
-        <Navbar dark color="secondary">
-          <div className="container">
-            <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-          </div>
-        </Navbar>
+      <Header />
         <Menu dishes={this.state.dishes}
             onClick={(dishId) => this.onDishSelect(dishId)}
         />       
@@ -38,6 +36,7 @@ class Main extends Component {
         filter function gives the sub array of the dishes for which the sub-array contains the contrained part of the array for which id matches selected dish
         the arrow function here helps us to select out all those dishes for which the dishId matches the selected dish */}
         {/* after selecting dish, we pass that dish info to the DishdetailComponent */}
+        <Footer />
       </div>
     );
   }
