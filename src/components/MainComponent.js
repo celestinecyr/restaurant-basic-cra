@@ -31,7 +31,8 @@ class Main extends Component {
         <Menu dishes={this.state.dishes}
             onClick={(dishId) => this.onDishSelect(dishId)}
         />       
-        
+        {/* When you click on any of the menu items the menu gets re-rendered with the new details of the selected dish */}
+
         <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0] }/>
         {/* this filter will operate on each dish in the dishes array, so we'll get access to each dish
         filter function gives the sub array of the dishes for which the sub-array contains the contrained part of the array for which id matches selected dish

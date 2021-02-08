@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
+class DishDetail extends React.Component {
 
-    function RenderDish({ dish }) {              //when the dish is selected^, we also want to render the details of the dish
-        //object containing dish^
-        return(
-            <div>
+    renderDish(dish) {              //when the dish is selected^, we also want to render the details of the dish
+            return(
+              <div>
                 <Card>
                     <CardImg width="100%" object src={dish.image} alt={dish.name} />  
                     <CardBody>
@@ -14,10 +14,10 @@ import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
                     </CardBody>
                 </Card>
               </div>
-        )
-    }
+            )
+        }
 
-    function RenderComments({ dish }) {
+    renderComments(dish) {
         if(dish != null) {
             const comment = dish.comments.map((comm) => {
                 return(
@@ -65,16 +65,17 @@ import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
     //     }
     // }
 
-    const DishDetail = (props) => {
-        if(props.dish != null) {
+    render() {
+        if(this.props.dish != null) {
             return (
                 <div class="container">
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
-                        <RenderDish dish={props.dish} />
+                        {this.renderDish(this.props.dish)}
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <RenderComments dish={props.dish} />
+                        {this.renderComments(this.props.dish)}
+                        {/* why is it not {this.renderComments(this.props.selectedDish)} */}
                     </div>
                 </div>
                 </div>
@@ -85,6 +86,6 @@ import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
             );
         }
     }
-
+}
 
 export default DishDetail;
