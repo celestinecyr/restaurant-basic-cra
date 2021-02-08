@@ -1,33 +1,16 @@
 import React from 'react';
 // import { Media } from 'reactstrap';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
-import DishDetail from './DishdetailComponent';
 
 class Menu extends React.Component {
 
     constructor(props) {
         super(props);
-
-        //defining a state for the component
-        //state stores property related to this component that we can make use of
-        this.state = {
-            selectedDish: null
-            //null - means havent select any dish
-        }
-    }
-
-    // onDishSelect method
-    onDishSelect(dish) {
-        //now we want to update for selectedDish to point here:
-        //HOW TO CHANGE THE STATE OF YOUR COMPONENT
-        //REMEMBER, WHEN WE WANT TO CHANGE THE STATE WE NEED TO USE THIS.SETSTATE FUNCTION CALL
-        //cannot just type this.setstate=dish WRONG!!
-        this.setState({ selectedDish:dish })
     }
 
     render() {
         //here we use the javascript map operator
-        // const menu = this.state.dishes.map((dish) => {
+        //const menu = this.state.dishes.map((dish) => {
         //previously, we have this.state={dishes[]}, but now we have dishes.js and its now props here instead of state
         
         const menu = this.props.dishes.map((dish) => {
@@ -45,8 +28,10 @@ class Menu extends React.Component {
                     The key helps React to recognise each one of these elements and while it is and while it is updating the screen so the keys will enable it to identify each of those elements uniquely. */}
                     
                     {/* HOW TO RENDER THE LIST OF ITEMS IN THE MENU? check out git Component part 1 for Media tags*/}     
-                    <Card onClick={() => this.onDishSelect(dish)}>
+                    {/* <Card onClick={() => this.onDishSelect(dish)}> */}
                     {/* means, on click of the card, we call this function and we pass the dish info as a parameter */}
+                    <Card onClick={() => this.props.onClick(dish.id)}>
+                    {/* When this is clicked, we will pass it back to the onclick method that has been sent from the MainComponent */}
                         <CardImg width="100%" object src={dish.image} alt={dish.name} />  
                         <CardImgOverlay body className="ml-5">
                             <CardTitle>{dish.name}</CardTitle>
@@ -65,7 +50,8 @@ class Menu extends React.Component {
                 
                 <div className="row">
                     {/* {this.renderDish(this.state.selectedDish)} */}
-                    <DishDetail dish={this.state.selectedDish} />
+                    {/* <DishDetail dish={this.state.selectedDish} /> 
+                    Menu Component no longer uses Dishdetail component*/}
                 </div>
             </div>
         );
