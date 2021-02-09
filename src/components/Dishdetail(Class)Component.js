@@ -88,4 +88,4 @@ class DishDetail extends React.Component {
     }
 }
 
-export default DishDetail;
+// export default DishDetail;

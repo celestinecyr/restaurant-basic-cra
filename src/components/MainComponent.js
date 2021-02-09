@@ -1,11 +1,13 @@
 // this file will be acting as a seudo container container for this application
 import React, { Component } from 'react';
 // import { Navbar, NavbarBrand } from 'reactstrap';
+import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { DISHES } from '../shared/dishes';              //has to be ../ we go one level up, then into the shared folder
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 class Main extends Component {
 
@@ -14,32 +16,42 @@ class Main extends Component {
 
     this.state = {              //define state here
       dishes: DISHES,           //js object (dishes): DISHES that we've just imported
-      selectedDish: null        //null - means havent select any dish
-    };
-  }
-
-  onDishSelect(dishId) {
-      this.setState({ selectedDish: dishId});     //update selectedDish to point here, we change the state of component with setState
+    }
   }
 
   render() {
+
+    const Homepage = () => {
+      return(
+        <Home />
+      )
+    }
+
     return (
       <div>
-      <Header />
-        <Menu dishes={this.state.dishes}
-            onClick={(dishId) => this.onDishSelect(dishId)}
-        />       
-        {/* When you click on any of the menu items the menu gets re-rendered with the new details of the selected dish */}
+        <Header />
+          <Switch>
+            <Route path="/home" component={Homepage} />
+            <Route exact path="/menu" component={ () => <Menu dishes={ this.state.dishes} />} />
+            {/* When we type exact path, means its strictly menu, not menu/something else.  
+            Because when we route to the dish detail component we will also start with /menu. 
+            only when its menu alone then it'll route to ^ menu compo*/}
 
-        <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0] }/>
-        {/* this filter will operate on each dish in the dishes array, so we'll get access to each dish
-        filter function gives the sub array of the dishes for which the sub-array contains the contrained part of the array for which id matches selected dish
-        the arrow function here helps us to select out all those dishes for which the dishId matches the selected dish */}
-        {/* after selecting dish, we pass that dish info to the DishdetailComponent */}
+            {/* if its just a component which doesnt require any additional attributes to be passed 
+            to it then we can simply specify the name of the component ie <Menu />
+            but then this way, we wont be able to pass in any props to the menu component.
+            if we want to pass in props to the menu component, then we have to pass that in as a function component. 
+            - inline Function Component */}
+            {/* () => <Menu dishes={ this.state.dishes} means we wont be able to pass the onClick method anymore, Menu will only receive dishes. */}
+            
+            <Redirect to="/home" /> 
+            {/* Anything that doesnt match home or menu will be redirected to home */}
+          </Switch>
         <Footer />
       </div>
     );
   }
+
 }
 
 export default Main;
