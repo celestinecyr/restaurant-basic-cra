@@ -1,9 +1,25 @@
 //Menu Functional Component
 import React from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardTitle } from 'reactstrap';
+import DishDetail from './DishdetailComponent';
 
 //Functional Component of Card (view)
 function RenderMenuItem({ dish, onClick }) {
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         isDishClicked:false,
+    //         selectedDish: null
+    //     }
+    //     this.onClick = this.onClick.bind(this);
+    // }
+
+    // onClick() {
+    //     this.setState({
+    //         isDishClicked: dish
+    //     })
+    // }
+
     return(                 //returns the view
         <Card onClick={() => onClick(dish.id)}>
         {/* not this.props.onClick, but just onClick since its coming in as parameter */}
@@ -14,6 +30,8 @@ function RenderMenuItem({ dish, onClick }) {
         </Card>
     );
 }
+
+
 
 //Another way of implementing a Functional Component
     const Menu = (props) => {
@@ -26,6 +44,7 @@ function RenderMenuItem({ dish, onClick }) {
                     <RenderMenuItem dish={dish} onClick={props.onClick}/>
                     {/* the RenderMenuItem takes in the 2 para dish and onclick
                     the onClick was sent in by the MainComponent that we are parsing in to the render menu compo as the function here */}
+                    <DishDetail />
                 </div>
             );
         }); 
