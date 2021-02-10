@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import Contact from './ContactComponent';
+import AboutUs from './AboutusComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
@@ -12,6 +13,7 @@ import { COMMENTS } from '../shared/comments';
 import { PROMOTIONS } from '../shared/promotions';
 import { LEADERS } from '../shared/leaders';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import Aboutus from './AboutusComponent';
 
 class Main extends Component {
 
@@ -81,6 +83,7 @@ class Main extends Component {
             {/* in line 75 we are using route params, so at the DishWithId func we put match!!:) */}
             <Route path="/menu/:dishId" component={DishWithId} />
             <Route exact path="/contactus" component={Contact} />    {/*we're gonna use contact but not passing in any props*/}
+            <Route exact path="/aboutus" component={ () => <Aboutus leaders={ this.state.leaders } />} />
             <Redirect to="/home" /> 
             {/* Anything that doesnt match home or menu will be redirected to home */}
 
