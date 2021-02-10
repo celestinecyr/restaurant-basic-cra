@@ -47,6 +47,20 @@ class Main extends Component {
       )
     }
 
+    //the route will pass in 3 props here: but we only look at match first
+    const DishWithId = ({match}) => {
+      return (
+        //for dish detail, what are the properties that i need to pass in??
+        <DishDetail 
+          dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+          // convert the string into int
+          //the match object (in the argument) has the params, would contain the dish ID as one of the params 
+          //& base 10 integer + [0] because the filter will return an array
+          comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))[0]}
+        />
+      );
+    }
+
     return (
       <div>
         <Header />
@@ -63,9 +77,14 @@ class Main extends Component {
             if we want to pass in props to the menu component, then we have to pass that in as a function component. 
             - inline Function Component */}
             {/* () => <Menu dishes={ this.state.dishes} means we wont be able to pass the onClick method anymore, Menu will only receive dishes. */}
+
+            {/* in line 75 we are using route params, so at the DishWithId func we put match!!:) */}
+            <Route path="/menu/:dishId" component={DishWithId} />
             <Route exact path="/contactus" component={Contact} />    {/*we're gonna use contact but not passing in any props*/}
             <Redirect to="/home" /> 
             {/* Anything that doesnt match home or menu will be redirected to home */}
+
+            {/* Take note that /menu is above /menu/dishId */}
           </Switch>
         <Footer />
       </div>

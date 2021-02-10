@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
-
+import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
     function RenderDish({ dish }) {              //when the dish is selected^, we also want to render the details of the dish
         //object containing dish^
@@ -17,51 +17,51 @@ import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
         )
     }
 
-    function RenderComments({ dish }) {
-        if(dish != null) {
-            const comment = dish.comments.map((comm) => {
+    function RenderComments({comments}) {
+        if(comments != null) {
                 return(
-                    // <div tag="li" className="col-12 mr-3">
-                    //     <p>{comm.comment}</p>
-                    //     <p>--{comm.author}, {comm.date}</p>
-                    // </div>
-                    <list type="unstyled" className="col-12 mr-3">
-                        <p>{comm.comment}</p>
-                        <p>--{comm.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comm.date)))}</p>
-                    </list>
-                )
-            })
-            return (
-                <div>
-                    <h1>Comments: </h1>
-                    <div list>{comment}</div>
-                </div>
-            )
+                    <div className="col-12 col-md-5 m-1">
+                    <h4>Comments</h4>
+                    <ul className="list-unstyled">
+                        {comments.map((comment) => {
+                            return (
+                                <li key={comment.id}>
+                                    <p>{comment.comment}</p>
+                                    <p>-- {comment.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    </div>
+                );
         } else {
-            <div></div>
-        }
+            return(
+                <div></div>
+            );
+        }   
     }
-    // renderComments(comments) {
-    //     if(comments != null) {
-    //         return(
-    //             <div className="col-12 col-md-5 m-1">
-    //                 <h4>Comments</h4>
-    //                 <ul className="list-unstyled">
-    //                     {comments.map((comm) => {
-    //                         return(
-    //                             <li key={comm.id}>
-    //                                 <p>{comm.comment}</p>
-    //                                 <p>--{comm.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comm.date)))}</p>
-    //                             </li>
-    //                         );
-    //                     })}
-    //                 </ul>
-    //             </div>
-    //         );
-    //     } else {
+    // function RenderComments({ comment }) {
+    //     if(comment != null) {
+    //         const comment = comment.comments.map((commentArr) => {
+    //             return(
+    //                 // <div tag="li" className="col-12 mr-3">
+    //                 //     <p>{comm.comment}</p>
+    //                 //     <p>--{comm.author}, {comm.date}</p>
+    //                 // </div>
+    //                 <list type="unstyled" className="col-12 mr-3">
+    //                     <p>{commentArr.comment}</p>
+    //                     <p>--{commentArr.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(commentArr.date)))}</p>
+    //                 </list>
+    //             )
+    //         })
     //         return (
-    //             <div></div>
-    //         );
+    //             <div>
+    //                 <h1>Comments: </h1>
+    //                 <div list>{comment}</div>
+    //             </div>
+    //         )
+    //     } else {
+    //         <div></div>
     //     }
     // }
 
@@ -69,12 +69,24 @@ import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
         if(props.dish != null) {
             return (
                 <div class="container">
+                    <div className="row">
+                        <Breadcrumb>
+                            <BreadcrumbItem><Link to={`/menu`}>Menu</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <div className="col-12">
+                            <h3>{props.dish.name}</h3>
+                            <hr />
+                        </div>
+                    </div>
+
+
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
                         <RenderDish dish={props.dish} />
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <RenderComments dish={props.dish} />
+                        <RenderComments comment={props.comment} />
                     </div>
                 </div>
                 </div>
@@ -85,6 +97,5 @@ import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
             );
         }
     }
-
 
 export default DishDetail;
