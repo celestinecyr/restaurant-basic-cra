@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col, Row, FormFeedback } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 //Since we need to store the state of the form in the state of our react component,
@@ -17,11 +17,22 @@ class Contact extends Component {
             email: '',
             agree: false,           //boolean
             contactType: 'Tel.',    //This will be used for a select form control
-            message: ''
+            message: '',
+            touched: {              //touched helps to keep track whether a particular field has been touched or not
+                firstname: false,
+                lastname: false,
+                telnum: false,
+                email: false
+            //the reason for tracking this is that if the form value has not even been touched by the user, the user has made no changes to that form value, then we should not be validating it at all
+            //only after user makes first change to any input boxes, then we can validate tht box
+            //so here we r tracking the state for each of the input boxes & whenever input is filled it chgs to true
+            //we handle that with the handleBlur() method
+            }
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
     }
 
     handleInputChange(event) {
@@ -55,7 +66,55 @@ class Contact extends Component {
     //onSubmit is found at <Form> tag
     //In order to make the handleSubmit of use, we need to BIND it in the constructor
 
+    handleBlur = (field) => (evt) => {
+    //the handleBlur will indicate which particular field has been modified
+    //and it'll also receive the corresponding evt in here
+        this.setState({
+            touched: { ...this.state.touched, [field]: true}
+            //means whatever input box that has been modified im gg to set tht to true
+        });
+    }
+
+    //validate function
+    validate(firstname, lastname, telnum, email) {
+        const errors = {            //here we construct a javascript obj errors containing message corresponding to the 4 values
+            firstname: '',
+            lastname: '',
+            telnum: '',
+            email: '',
+        };  
+    //validations      
+        if (this.state.touched.firstname && firstname.length < 3) //if firstname has been touched & fn length<3 then..
+            errors.firstname = "First Name should be >= 3 characters";
+        else if (this.state.touched.firstname && firstname.length > 10)
+        errors.firstname = "First Name should be <= 10 characters";
+
+        if (this.state.touched.lastname && lastname.length < 3) 
+            errors.lastname = "Last Name should be >= 3 characters";
+        else if (this.state.touched.lastname && lastname.length > 10)
+        errors.lastname = "Last Name should be <= 10 characters";
+
+        //for telephone number we wanna make sure that they're only numbers!
+        const reg = /^\d+$/;        //this regex means that the string of char shld be ALL numbers
+        if (this.state.touched.telnum && !reg.test(telnum)) 
+        //if telnum is touched and is not reg.test & the reg.test is a built in mthd for the regex
+        //reg.test says if you give it a string there, it will return a Boolean value which performs the search and indicates 
+        //whether the pattern exists in the string or not
+            errors.telnum = 'Tel. Number should contain only numbers';
+
+        if (this.state.touched.email && email.split('').filter(x => x === '@').length !== 1)
+        //checking each of the character in email field to see if there is at least 1 @ character in email or not
+        //if dont have then not valid email
+            errors.email = 'Emails should contain an @ sign';
+
+        return errors;
+    }
+    //then we invoke this within render() because everytime there's a chg in input fields, form will be rerendered
+    //so that'll be appropriate time to chekc
+
     render() {
+        const errors = this.validate(this.state.firstname, this.state.lastname, this.state.telnum, this.state.email);
+
         return(
             <div className="container">
                 <div className="row">
@@ -111,32 +170,43 @@ class Contact extends Component {
                                 position the input box to input firstname*/}
                                 
                                 <Col md={10}> {/*for MD-XL Screen,10 cols. Col in reactstrap = <div className="col-md-10"> of bootstrap */}
-                                    <Input type="text" id="firstname" name="firstname" placeholder="First Name" value={this.state.firstname} onChange={this.handleInputChange}/>
-                                    {/* we give the name="firstname" so that it'll tie itself to the <Label for=""> --> we type htmlFor so that 
-                                    it wont be confused with javascript's for
-                                    value : we will tie this to the controlled component's state. By doing so, this becomes a controlled form 
-                                    so any changes here will be reflected in the React Component's state */}
+                                    <Input type="text" id="firstname" name="firstname" placeholder="First Name" value={this.state.firstname} 
+                                    valid={errors.firstname === ''} invalid={errors.firstname !== ''}
+                                    onBlur={this.handleBlur('firstname')} onChange={this.handleInputChange}/>
+                                    {/* we give the name="firstname" so that it'll tie itself to the <Label for=""> --> we type htmlFor so that it wont be confused with javascript's for
+                                    value : we will tie this to the controlled component's state. By doing so, this becomes a controlled form so any changes here will be reflected in the React Component's state */}
+                                    {/* valid={errors.firstname === ''} means --> this field is a valid field if errors is empty. else...  */}
+                                    <FormFeedback>{errors.firstname}</FormFeedback>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label htmlFor="lastname" md={2}>Last Name</Label>
                                 <Col md={10}>
-                                    <Input type="text" id="lastname" name="lastname" placeholder="Last Name" value={this.state.lastname} onChange={this.handleInputChange}/>
+                                    <Input type="text" id="lastname" name="lastname" placeholder="Last Name" value={this.state.lastname} 
+                                        valid={errors.lastname === ''} invalid={errors.lastname !== ''}
+                                        onBlur={this.handleBlur('lastname')} onChange={this.handleInputChange}/>
+                                    <FormFeedback>{errors.lastname}</FormFeedback>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
                                 <Col md={10}>
-                                    <Input type="tel" id="telnum" name="telnum" placeholder="Tel. Number" value={this.state.telnum} onChange={this.handleInputChange}/>
+                                    <Input type="tel" id="telnum" name="telnum" placeholder="Tel. Number" value={this.state.telnum} 
+                                        valid={errors.telnum === ''} invalid={errors.telnum !== ''}
+                                        onBlur={this.handleBlur('telnum')} onChange={this.handleInputChange}/>
+                                    <FormFeedback>{errors.telnum}</FormFeedback>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label htmlFor="email" md={2}>Email</Label>
                                 <Col md={10}>
-                                    <Input type="email" id="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleInputChange}/>
+                                    <Input type="email" id="email" name="email" placeholder="Email" value={this.state.email} 
+                                         valid={errors.email === ''} invalid={errors.email !== ''}
+                                        onBlur={this.handleBlur('email')} onChange={this.handleInputChange}/>
+                                    <FormFeedback>{errors.email}</FormFeedback>
                                 </Col>
                             </FormGroup>
 
