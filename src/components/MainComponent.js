@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 // import { Navbar, NavbarBrand } from 'reactstrap';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
+import Aboutus from './AboutusComponent';
 import Contact from './ContactComponent';
-import AboutUs from './AboutusComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
@@ -13,7 +13,6 @@ import { COMMENTS } from '../shared/comments';
 import { PROMOTIONS } from '../shared/promotions';
 import { LEADERS } from '../shared/leaders';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import Aboutus from './AboutusComponent';
 
 class Main extends Component {
 
