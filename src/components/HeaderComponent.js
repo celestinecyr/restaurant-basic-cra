@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron } from 'reactstrap';
+import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron, 
+    Button, Modal, ModalHeader, ModalBody, 
+    Form, FormGroup, Label, Input } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
-class Header extends React.Component {
+class Header extends Component {
 
     constructor(props){
         super(props);
         this.state={
             isNavOpen: false,
+            isModalOpen: false
         }
         this.toggleNav = this.toggleNav.bind(this);
         // By doing this here we're specifying that this.toggleNav will now become available as this.toggleNav
         //this JS variable toggleNav (left) will be pointing to this function that is bound to this(line17). so thats why we could specify the onClick as this.toggleNav
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
+
     }
 
     toggleNav() {
@@ -21,6 +27,22 @@ class Header extends React.Component {
     }
     // whenever there is a method like that^ to make it available for use within jsx, 
     //we need to bind this in our code. so in constructor we type ^
+   
+    toggleModal() {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }
+
+    handleLogin(event) {
+    //this method receives the event as param,
+        this.toggleModal();             //we'll close the modal at this point, once the form is submitted and then,
+        alert("Username: " + this.username.value + "Password: " + this.password.value 
+            + "Remember: " + this.remember.checked); 
+        //using this alert to verify that the form has been submitted
+        event.preventDefault();
+        //We use preventDefault() to cancel event
+    }
     render() {
         return (
             <React.Fragment>
@@ -54,11 +76,20 @@ class Header extends React.Component {
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink className="nav-link" to="/contact us">
+                                    <NavLink className="nav-link" to="/contactus">
                                         <span className="fa fa-address-card fa-lg"></span> Contact Us
                                     </NavLink>
                                 </NavItem>
                             </Nav>
+
+                            <Nav className="ml-auto" navbar>        {/*give this left margin, as much as possible*/}
+                                <NavItem>
+                                    <Button outline onClick={this.toggleModal}>
+                                        <span className="fa fa-sign-in fa-lg"></span>Login
+                                    </Button>
+                                </NavItem>
+                            </Nav>
+
                         </Collapse>
                     </div>
                 </Navbar>
@@ -77,6 +108,36 @@ class Header extends React.Component {
                         </div>
                     </div>
                 </Jumbotron>
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                    <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
+                    <ModalBody>
+                        {/* uncontrolled form in here */}
+                        <Form onSubmit={this.handleLogin}>
+                            <FormGroup>
+                                <Label htmlFor="username">Username</Label>
+                                <Input type="text" id="username" name="username"
+                                    innerRef={(input) => this.username =input} />     
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="password">Password</Label>
+                                <Input type="password" id="password" name="password"
+                                    innerRef={(input) => this.password =input} />     
+                                {/* since type is password, pw will not show and will be hidden */}
+                            </FormGroup>
+                            <FormGroup check>
+                                <Label check>
+                                    <Input type="checkbox" name="remember" 
+                                    innerRef={(input) => this.remember =input}/>
+                                    <strong>Remember Me</strong>
+                                </Label>
+                            </FormGroup>
+                            <FormGroup>
+                                <Button type="submit" value="submit" className="primary">Login</Button>
+                            </FormGroup>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+
             </React.Fragment>
 
             //<> </> is react fragment which allows us to group together a bunch of React elements and then return it
