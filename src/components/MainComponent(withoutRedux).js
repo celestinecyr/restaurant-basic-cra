@@ -8,32 +8,23 @@ import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
-//[REDUX] remove these bc now Main Component will obtain state from Redux store
-// import { DISHES } from '../shared/dishes';              //has to be ../ we go one level up, then into the shared folder
-// import { COMMENTS } from '../shared/comments';
-// import { PROMOTIONS } from '../shared/promotions';
-// import { LEADERS } from '../shared/leaders';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-
-const mapStateToProps = state => {
-  /* this will map the Redux Store's state into props that will 
-  become available to our component */
-    return {
-      dishes: state.dishes, //this dishes bcome avail from Redux store's state here (this 'state' here is state from redux store)
-      comments: state.comments,
-      promotions: state.promotions,
-      leaders: state.leaders
-    }
-    // Now, these 4 will become available as props to the MAIN COMPO
-    // HOW? by connecting Main to Redux Store:
-    // export default withRouter(connect(mapStateToProps)(Main));
-}
+import { DISHES } from '../shared/dishes';              //has to be ../ we go one level up, then into the shared folder
+import { COMMENTS } from '../shared/comments';
+import { PROMOTIONS } from '../shared/promotions';
+import { LEADERS } from '../shared/leaders';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 class Main extends Component {
+
   constructor(props) {
     super(props);
 
+    this.state = {              //define state here
+      dishes: DISHES,           //js object (dishes): DISHES that we've just imported
+      comments: COMMENTS,
+      promotions: PROMOTIONS,
+      leaders: LEADERS
+    }
   }
 
   render() {
@@ -42,9 +33,17 @@ class Main extends Component {
       return(
         //we're going to pass in 3 props for the home component - comments, promo, leaders
         <Home 
-          dish={this.props.dishes.filter((dish) => dish.featured)[0]} 
-          promotion={this.props.promotions.filter((promo) => promo.featured)[0]} 
-          leader={this.props.leaders.filter((leader) => leader.featured)[0]} 
+          dish={this.state.dishes.filter((dish) => dish.featured)[0]} 
+        //currently we are in the parent page component.(MainComponent)  
+        //Now to pass it to the home page, --> this.state.dishes
+        //After passing it to home component --> inside the home component you call the 
+        //properties as this.props.dishes
+
+        //what kind of filter are we applying?
+        // all those (dishes) for which dish.featured
+        //because feature is true/false --> boolean
+          promotion={this.state.promotions.filter((promo) => promo.featured)[0]} 
+          leader={this.state.leaders.filter((leader) => leader.featured)[0]} 
         />
       )
     }
@@ -54,11 +53,11 @@ class Main extends Component {
       return (
         //for dish detail, what are the properties that i need to pass in??
         <DishDetail 
-          dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+          dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
           // convert the string into int
           //the match object (in the argument) has the params, would contain the dish ID as one of the params 
           //& base 10 integer + [0] because the filter will return an array
-          comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))[0]}
+          comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))[0]}
         />
       );
     }
@@ -68,7 +67,7 @@ class Main extends Component {
         <Header />
           <Switch>
             <Route path="/home" component={HomePage} />
-            <Route exact path="/menu" component={ () => <Menu dishes={ this.props.dishes } />} />
+            <Route exact path="/menu" component={ () => <Menu dishes={ this.state.dishes } />} />
             {/* When we type exact path, means its strictly menu, not menu/something else.  
             Because when we route to the dish detail component we will also start with /menu. 
             only when its menu alone then it'll route to ^ menu compo*/}
@@ -83,7 +82,7 @@ class Main extends Component {
             {/* in line 75 we are using route params, so at the DishWithId func we put match!!:) */}
             <Route path="/menu/:dishId" component={DishWithId} />
             <Route exact path="/contactus" component={Contact} />    {/*we're gonna use contact but not passing in any props*/}
-            <Route exact path="/aboutus" component={ () => <Aboutus leaders={ this.props.leaders } />} />
+            <Route exact path="/aboutus" component={ () => <Aboutus leaders={ this.state.leaders } />} />
             <Redirect to="/home" /> 
             {/* Anything that doesnt match home or menu will be redirected to home */}
 
@@ -96,7 +95,4 @@ class Main extends Component {
 
 }
 
-export default withRouter(connect(mapStateToProps)(Main));
-
-// If we are using react router then to make export default (connect(mapStateToProps)(Main)); work,
-// we need to surround it with withRouter
+// export default Main;
