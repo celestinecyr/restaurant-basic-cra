@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 //Since we need to store the state of the form in the state of our react component,
 //we need to turn Contact Compo into a class compo to be able to support controlled forms
-class Contact extends Component {
+class ContactEg1 extends Component {
     
     //to reflect the state in our component, we instantiate the constructor for our Contact Compo
     constructor(props){
@@ -258,4 +258,4 @@ class Contact extends Component {
     
 }
 
-// export default Contact;
+export default ContactEg1;
