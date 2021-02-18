@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import Aboutus from './AboutusComponent';
-import Contact from './ContactComponent';
+import Contact from './Contact(withoutRedux)';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
