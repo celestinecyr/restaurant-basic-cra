@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+
 function RenderCard({item}) {         //since this function component is only going to be used here, we can just write the func here
     //RenderCard will receive props ( on line 6 ) and the props will contain just one property which is item
     //so we're just going to extract that item out right within the properties itself.

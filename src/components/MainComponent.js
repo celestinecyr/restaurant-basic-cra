@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import Aboutus from './AboutusComponent';
-import Contact from './Contact(withoutRedux)';
+import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
@@ -15,6 +15,7 @@ import Footer from './FooterComponent';
 // import { LEADERS } from '../shared/leaders';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Test from './Test';
 
 const mapStateToProps = state => {
   /* this will map the Redux Store's state into props that will 
@@ -31,10 +32,9 @@ const mapStateToProps = state => {
 }
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
 
