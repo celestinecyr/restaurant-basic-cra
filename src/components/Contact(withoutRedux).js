@@ -55,7 +55,7 @@ class ContactEg1 extends Component {
         //How do we tie this handleInputChange mtd to the inputs? we add onChange={this.handleInputChange}
     }
     //Without handleinputChange, when we try to type in the input boxes nothing will appear.
-    //Because, when we change anyth in input box its tired to the state of our controlling compo
+    //Because, when we change anyth in input box its tied to the state of our controlling compo
 
     handleSubmit(event) {
         console.log("Current State is:" + JSON.stringify(this.state));
@@ -251,7 +251,9 @@ class ContactEg1 extends Component {
                             so, we implement 2 handlers to take care of handling this form.*/}
                         </Form>
                     </div>
+
                 </div>
+
             </div>
         );
     }
